@@ -1,22 +1,26 @@
 
 @import <Foundation/CPObject.j>
 
+@import "TMSyntaxDefinition.j"
+
 
 var PLIST = require("objective-j/plist");
+
 
 var Languages               = nil,
     LanguagesForFileTypes   = nil;
 
-@implementation TMLanguage : CPObject
+@implementation TMLanguage : TMSyntaxDefinition
 {
     CPString    name @accessors(readonly);
     CPSet       fileTypes @accessors(readonly);
 
+    CPString    scopeName @accessors(readonly);
+    CPString    UUID @accessors(readonly);
+
     RegExp      firstLineMatch @accessors(readonly);
     RegExp      foldingStartMarker @accessors(readonly);
     RegExp      foldingStopMarker @accessors(readonly);
-    RegExp      match @accessors(readonly);
-    RegExp      begin @accessors(readonly);
 }
 
 + (TMLanguage)languageForFileAtURL:(CPURL)aURL
@@ -67,28 +71,32 @@ var Languages               = nil,
         [LanguagesForFileTypes setObject:aLanguage forKey:fileType];
 }
 
-- (id)initWithURL:(CPURL)aURL
+- (id)initWithDictionary:(CPDictionary)aDictionary
 {
-    self = [super init];
+    self = [super initWithDictionary:aDictionary];
 
     if (self)
     {
-        var dictionary = PLIST.readPlist([aURL absoluteString]);
+        name = [aDictionary objectForKey:@"name"];
 
-        name = [dictionary objectForKey:@"name"];
+        fileTypes = [CPSet setWithArray:[aDictionary objectForKey:"fileTypes"]];
 
-        fileTypes = [CPSet setWithArray:[dictionary objectForKey:"fileTypes"]];
+        scopeName = [aDictionary objectForKey:@"scopeName"];
+        UUID = [aDictionary objectForKey:@"uuid"];
 
-        firstLineMatch = [dictionary objectForKey:"firstLineMatch"] && new RegExp(firstLineMatch);
-        foldingStartMarker  = [dictionary objectForKey:"foldingStartMarker"] && new RegExp(foldingStartMarker);
-        foldingStopMarker = [dictionary objectForKey:"foldingStopMarker"] && new RegExp(foldingStopMarker);
-        match = [dictionary objectForKey:"match"] && new RegExp(match);
-        begin = [dictionary objectForKey:"begin"] && new RegExp(begin);
+        firstLineMatch = [aDictionary objectForKey:"firstLineMatch"] && new RegExp(firstLineMatch);
+        foldingStartMarker  = [aDictionary objectForKey:"foldingStartMarker"] && new RegExp(foldingStartMarker);
+        foldingStopMarker = [aDictionary objectForKey:"foldingStopMarker"] && new RegExp(foldingStopMarker);
 
         [TMLanguage _registerLanguage:self forFileTypes:fileTypes];
     }
 
     return self;
+}
+
+- (id)initWithContentsOfURL:(CPURL)aURL
+{
+    return [super initWithDictionary:PLIST.readPlist([aURL absoluteString])];
 }
 
 @end
