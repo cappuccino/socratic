@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>[${1:object} setAutoresizingMask:CPViewHeightSizable | CPViewMaxXMargin];</string>
+	<key>name</key>
+	<string>mask: resize height left</string>
+	<key>scope</key>
+	<string>source.js.objj</string>
+	<key>tabTrigger</key>
+	<string>mhl</string>
+	<key>uuid</key>
+	<string>3D75A1F9-9456-4C1D-8B96-2A375AF4122E</string>
+</dict>
+</plist>

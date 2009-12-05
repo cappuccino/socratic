@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>[CPColor colorWithHexString:"${1}"]</string>
+	<key>name</key>
+	<string>CPColor hex</string>
+	<key>scope</key>
+	<string>source.js.objj</string>
+	<key>tabTrigger</key>
+	<string>color</string>
+	<key>uuid</key>
+	<string>99391F43-2695-4DCC-8E39-D03EF0A06928</string>
+</dict>
+</plist>
