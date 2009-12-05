@@ -72,6 +72,16 @@
             else
                 [repository setObject:[TMSyntaxDefinition syntaxWithDictionary:dictionary] forKey:key];
         }
+    }
+
+    return self;
+}
+
+- (CPString)description
+{
+    return  [super description] + '\n' +
+            (name ? "\tname: " + name : "") +
+            (contentName ? "\tcontentName: " + contentName : "");
 }
 
 @end

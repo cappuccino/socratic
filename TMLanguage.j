@@ -37,7 +37,7 @@ var Languages               = nil,
         firstLine = nil;
 
     // Skip space lines.
-    while ((firstLine = file.readLine()).replace(/^\s+/, '').replace(/\s+$/, '')[1].length === 0) ;
+    while ((firstLine = file.readLine()).trim().length === 0) ;
 
     if (!firstLine)
         return nil;
@@ -96,7 +96,7 @@ var Languages               = nil,
 
 - (id)initWithContentsOfURL:(CPURL)aURL
 {
-    return [super initWithDictionary:PLIST.readPlist([aURL absoluteString])];
+    return [self initWithDictionary:PLIST.readPlist([aURL absoluteString])];
 }
 
 @end

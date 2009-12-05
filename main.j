@@ -13,6 +13,11 @@ var URI     = require("uri").URI,
 [TMBundle loadBundlesLocatedInDirectoryAtURL:[CPURL URLWithString:@"Bundles"]];
 //s = [[SourceGroup alloc] initWithFiles:new JAKE.FileList("AppKit/**.j")];
 
+[TMBundle allBundles].forEach(function(aBundle)
+{
+    print(aBundle);
+})
+
 new JAKE.FileList("AppKit/**.j").forEach(function(aFilePath)
 {
     print("will use " + [[TMLanguage languageForFileType:FILE.extension(aFilePath)] name] + " for " + aFilePath);
