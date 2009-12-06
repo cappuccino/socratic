@@ -45,10 +45,6 @@ var DOM = require("browser/dom");
     return self;
 }
 
-- (void)parserDidStartDocument:(TMSourceParser)aParser
-{
-}
-
 - (void)parser:(TMSourceParser)aParser didStartScope:(CPString)aScopeName
 {
     var element = sourcesDocument.createElementNS("", aScopeName);
