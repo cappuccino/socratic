@@ -7,22 +7,32 @@
 var PLIST = require("objective-j/plist");
 
 
-var Grammars                = nil,
-    GrammarsForFileTypes    = nil;
+var GrammarsForFileTypes    = nil,
+    GrammarsForScopeNames   = nil;
 
 @implementation TMLanguageGrammar : CPObject
 {
-    CPString    name @accessors(readonly);
-    CPSet       fileTypes @accessors(readonly);
+    CPString        name @accessors(readonly);
+    CPSet           fileTypes @accessors(readonly);
 
-    CPString    scopeName @accessors(readonly);
-    CPString    UUID @accessors(readonly);
+    CPString        scopeName @accessors(readonly);
+    CPString        UUID @accessors(readonly);
 
-    RegExp      firstLineMatch @accessors(readonly);
-    RegExp      foldingStartMarker @accessors(readonly);
-    RegExp      foldingStopMarker @accessors(readonly);
+    RegExp          firstLineMatch @accessors(readonly);
+    RegExp          foldingStartMarker @accessors(readonly);
+    RegExp          foldingStopMarker @accessors(readonly);
 
-    CPArray     rules @accessors(readonly);
+    CPArray         rules @accessors(readonly);
+    CPDictionary    repository @accessors(readonly);
+}
+
++ (void)initialize
+{
+    if (self !== [TMLanguageGrammar class])
+        return;
+
+    GrammarsForFileTypes = [CPDictionary dictionary];
+    GrammarsForScopeNames = [CPDictionary dictionary];
 }
 
 + (TMLanguageGrammar)grammarForFileAtURL:(CPURL)aURL
@@ -61,13 +71,17 @@ var Grammars                = nil,
     return [GrammarsForFileTypes objectForKey:aFileType];
 }
 
-+ (void)_registerGrammar:(TMLanguageGrammar)aGrammar forFileTypes:(CPSet)fileTypes
++ (TMLanguageGrammar)grammarWithScopeName:(CPString)aScopeName
 {
-    if (!GrammarsForFileTypes)
-        GrammarsForFileTypes = [CPDictionary dictionary];
+    return [GrammarsForScopeNames objectForKey:aScopeName];
+}
+
++ (void)_registerGrammar:(TMLanguageGrammar)aGrammar
+{
+    [GrammarsForScopeNames setObject:aGrammar forKey:[aGrammar scopeName]];
 
     var fileType = nil,
-        fileTypeEnumerator = [fileTypes objectEnumerator];
+        fileTypeEnumerator = [[aGrammar fileTypes] objectEnumerator];
 
     while (fileType = [fileTypeEnumerator nextObject])
         [GrammarsForFileTypes setObject:aGrammar forKey:fileType];
@@ -91,8 +105,9 @@ var Grammars                = nil,
         foldingStopMarker = RegExpOrNil([aDictionary objectForKey:"foldingStopMarker"]);
 
         rules = [[aDictionary objectForKey:@"patterns"] toLanguageRulesArrayWithGrammar:self];
+        repository = [[aDictionary objectForKey:@"repository"] toLanguageRulesDictionaryWithGrammar:self];
 
-        [TMLanguageGrammar _registerGrammar:self forFileTypes:fileTypes];
+        [TMLanguageGrammar _registerGrammar:self];
     }
 
     return self;

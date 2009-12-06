@@ -4,6 +4,7 @@
 @import <Foundation/CPObject.j>
 @import <Foundation/CPString.j>
 
+@import "TMLanguageRuleReference.j"
 
 
 @implementation TMLanguageRule : CPObject
@@ -34,6 +35,11 @@
 
     if (self)
     {
+        var referenceName = [aDictionary objectForKey:@"include"];
+
+        if ([referenceName length])
+            return [[TMLanguageRuleReference alloc] initWithReferenceName:referenceName grammar:aGrammar];
+
         name = [[aDictionary objectForKey:@"name"] stringByTrimmingWhitespace];
         contentName = [[aDictionary objectForKey:@"contentName"] stringByTrimmingWhitespace];
         captures = [aDictionary objectForKey:@"captures"];
@@ -78,3 +84,18 @@ function RegExpOrNil(/*CPString*/ aString)
 
 @end
 
+@implementation CPDictionary (TMLanguageRuleAdditions)
+
+- (CPDictionary)toLanguageRulesDictionaryWithGrammar:(TMLanguageGrammar)aGrammar
+{
+    var dictionary = [CPDictionary dictionary],
+        key = nil,
+        keyEnumerator = [self keyEnumerator];
+
+    while (key = [keyEnumerator nextObject])
+        [dictionary setObject:[TMLanguageRule ruleWithDictionary:[self objectForKey:key] grammar:aGrammar] forKey:key];
+
+    return dictionary;
+}
+
+@end
