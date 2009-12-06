@@ -1,6 +1,8 @@
 
 @import <Foundation/Foundation.j>
 
+@import "TMSourceParser.j"
+
 
 var DOM = require("browser/dom");
 
