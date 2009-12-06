@@ -1,5 +1,5 @@
 
-@import "TMLanguage.j"
+@import "TMLanguageGrammar.j"
 
 
 var FILE = require("file"),
@@ -13,7 +13,7 @@ var BundlesForUUIDs;
 {
     CPString    UUID @accessors(readonly);
     CPString    URL @accessors(readonly);
-    CPSet       languages @accessors(readonly);
+    CPSet       grammars @accessors(readonly);
 }
 
 + (void)initialize
@@ -54,14 +54,14 @@ var BundlesForUUIDs;
         [BundlesForUUIDs setObject:self forKey:UUID];
 
         URL = aURL;
-        languages = [CPSet set];
+        grammars = [CPSet set];
 
         var syntaxesPath =  absolutePath + "/Syntaxes/**/*",
-            languageFiles = new FileList(syntaxesPath + ".tmLanguage").include(syntaxesPath + ".tmSyntax");
+            grammarFiles = new FileList(syntaxesPath + ".tmLanguage").include(syntaxesPath + ".tmSyntax");
 
-        languageFiles.forEach(function(aFilePath)
+        grammarFiles.forEach(function(aFilePath)
         {
-            [languages addObject:[[TMLanguage alloc] initWithContentsOfURL:[CPURL URLWithString:aFilePath]]];
+            [grammars addObject:[[TMLanguageGrammar alloc] initWithContentsOfURL:[CPURL URLWithString:aFilePath]]];
         });
     }
 
@@ -70,9 +70,9 @@ var BundlesForUUIDs;
 
 - (void)description
 {
-    return  [super description] + '\n' +
-            "\tUUID: " + UUID + '\n' +
-            "\tlanguages: " + [[languages allObjects] description].split('\n').join("\n\t");
+    return  [super description] +
+            "\n\tUUID: " + UUID +
+            "\n\tgrammars: " + [[grammars allObjects] description].split('\n').join("\n\t");
 }
 
 @end

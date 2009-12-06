@@ -20,7 +20,7 @@ var URI     = require("uri").URI,
 
 new JAKE.FileList("AppKit/**.j").forEach(function(aFilePath)
 {
-    print("will use " + [[TMLanguage languageForFileType:FILE.extension(aFilePath)] name] + " for " + aFilePath);
+    print("will use " + [[TMLanguageGrammar grammarForFileType:FILE.extension(aFilePath)] name] + " for " + aFilePath);
 });
 
 exports.app = JACK.URLMap(
