@@ -24,7 +24,7 @@
     if (!rule)
     {
         if (referenceName === @"$self" || referenceName === @"$base")
-            rule = grammar;
+            rule = [grammar baseRule];
 
         else if (referenceName.charAt(0) === "#")
             rule = [[grammar repository] objectForKey:referenceName.substr(1)];

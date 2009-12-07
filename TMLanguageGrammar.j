@@ -22,7 +22,7 @@ var GrammarsForFileTypes    = nil,
     RegExp          foldingStartMarker @accessors(readonly);
     RegExp          foldingStopMarker @accessors(readonly);
 
-    CPArray         rules @accessors(readonly);
+    TMLanguageRule  baseRule @accessors(readonly);
     CPDictionary    repository @accessors(readonly);
 }
 
@@ -104,7 +104,7 @@ var GrammarsForFileTypes    = nil,
         foldingStartMarker = RegExpOrNil([aDictionary objectForKey:"foldingStartMarker"]);
         foldingStopMarker = RegExpOrNil([aDictionary objectForKey:"foldingStopMarker"]);
 
-        rules = [[aDictionary objectForKey:@"patterns"] toLanguageRulesArrayWithGrammar:self];
+        baseRule = [TMLanguageRule ruleWithDictionary:aDictionary grammar:self];
         repository = [[aDictionary objectForKey:@"repository"] toLanguageRulesDictionaryWithGrammar:self];
 
         [TMLanguageGrammar _registerGrammar:self];
@@ -123,7 +123,7 @@ var GrammarsForFileTypes    = nil,
     return  [super description] + 
             (name ? "\n\tname: " + name : "") +
             (scopeName ? "\n\tscopeName: " + scopeName : "") + 
-            (rules ? "\n\trules: " + [rules description].split('\n').join("\n\t") : "");
+            (baseRule ? "\n\trule: " + [baseRule description].split('\n').join("\n\t") : "");
 }
 
 @end
