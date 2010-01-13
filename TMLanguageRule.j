@@ -66,13 +66,13 @@
 }
 
 /*
-- ()matchFirstSon position:
+- (CPString)matchFirstSubRule:(CPString)aString position:(unsigned)aPosition
 {
     var rules = [self rules];
 
     // This handles the n
     if (!rules)
-        return;
+        return nil;
 
     var match = nil,
         index = 0,

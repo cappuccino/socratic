@@ -23,7 +23,8 @@ new JAKE.FileList("AppKit/**.j").forEach(function(aFilePath)
     print("will use " + [[TMLanguageGrammar grammarForFileType:FILE.extension(aFilePath)] name] + " for " + aFilePath);
 });
 
-exports.app = JACK.URLMap(
+// FIXME: exports.app isn't the way to go anymore?
+/*exports.app = JACK.URLMap(
 {
     "/" : function(env)
     {
@@ -34,4 +35,4 @@ exports.app = JACK.URLMap(
 
         return response.finish();
     }
-});
+});*/
